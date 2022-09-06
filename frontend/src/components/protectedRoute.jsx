@@ -1,8 +1,10 @@
+import { useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 
-function ProtectedRoute(props, { children }) {
-    const [userDetails, setUserDetails] = props.data.userDetails;
-    console.log(userDetails);
+import UserContext from '../utils/userContext';
+
+function ProtectedRoute({ children }) {
+    const { userDetails, setUserDetails } = useContext(UserContext);
 
     /* if(
         props.data.inverse

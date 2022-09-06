@@ -24,6 +24,11 @@ app.get('/', (req, res) => res.json({
     version,
 }));
 
+app.get('/api', (req, res) => res.json({
+    name,
+    version,
+}));
+
 route(app);
 
 /*

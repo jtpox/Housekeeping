@@ -1,21 +1,20 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useFormik } from 'formik';
+
+import UserContext from '../utils/userContext';
 
 import { authenticate } from '../api/user';
 
 function Home(props) {
-    const [userDetails, setUserDetails] = props.data.userDetails;
+    const { userDetails, setUserDetails } = useContext(UserContext);
 
     const [loginForm, setLoginForm] = useState({
         email: '',
         password: '',
     })
 
-    if(userDetails.token) {
-        return <Navigate to="/dashboard" />;
-    }
-
+    const [errorMessage, setErrorMessage] = useState('');
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -23,13 +22,23 @@ function Home(props) {
         },
         onSubmit: values => {
             authenticate(values.email, values.password).then(result => {
-                console.log(result);
+                localStorage.setItem('housekeeping', JSON.stringify(result.data));
+                setUserDetails(result.data);
+            }).catch(err => {
+                setErrorMessage('Invalid login details.');
             });
         }
     });
 
+    if(userDetails.token) {
+        return <Navigate to="/dashboard" />;
+    }
+
     return (
-        <div className="hero min-h-screen">
+        <div
+            className="hero min-h-screen"
+            style={{ backgroundImage: `url("https://placeimg.com/1000/800/arch")` }}>
+            <div className="hero-overlay bg-opacity-60"></div>
             <div className="hero-content flex-col lg:flex-row-reverse">
 
                 <div className="text-center lg:text-center">
@@ -41,6 +50,15 @@ function Home(props) {
                     <form
                         className="card-body"
                         onSubmit={formik.handleSubmit}>
+                        {errorMessage !== '' &&
+                        <div className="form-control">
+                            <div className="alert alert-error shadow-lg">
+                                <div>
+                                    {errorMessage}
+                                </div>
+                            </div>
+                        </div>}
+
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Email</span>
@@ -66,7 +84,7 @@ function Home(props) {
                                 onChange={formik.handleChange} />
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary">Login</button>
+                            <button className="btn btn-primary" type="submit">Login</button>
                         </div>
                     </form>
                 </div>
