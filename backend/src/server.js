@@ -1,6 +1,7 @@
 const dotenv = require('dotenv');
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 
 dotenv.config();
 
@@ -13,6 +14,7 @@ const argon2 = require('argon2');
 const { name, version } = require('../package.json');
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(passport.initialize());
