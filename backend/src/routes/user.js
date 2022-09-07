@@ -8,6 +8,7 @@ const passport = require('../utils/passport');
 
 const {
     getUsers,
+    getUserDetails,
     addUser,
     updateUser,
     updateUserHousekeeping,
@@ -43,6 +44,13 @@ router.get(
     passport.authenticate('jwt', { session: false }),
     isManagerOrAdmin,
     getUsers,
+);
+
+router.get(
+    '/:id',
+    passport.authenticate('jwt', { session: false }),
+    isManagerOrAdmin,
+    getUserDetails,
 );
 
 router.post(

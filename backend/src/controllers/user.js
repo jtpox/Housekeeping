@@ -40,7 +40,7 @@ function getUsers(req, res) {
     
     let query = (req.user.user_group === 'admin')?
         userModel.findAll({
-            attributes: { exclude: ['password'] }
+            attributes: { exclude: ['password'] },
         }) : userModel.findAll({
             attributes: { exclude: ['password'] },
             where: {
@@ -52,10 +52,43 @@ function getUsers(req, res) {
     logModel.addEntry(
         req.user.id,
         null,
-        (req.user.user_group === 'admin')? 'users.view.all' : 'users.view.sameDepartment',
+        (req.user.user_group === 'admin')? 'users.view.all' : 'users.view.department',
         `${req.user.username} (User ID: ${req.user.id}) viewed ${(req.user.user_group === 'admin')? 'all users' : 'users in the same department'}.`,
     );
 
+    return query
+        .then(result => res.json(result))
+        .catch(err => res.status(500).json(err));
+}
+
+/*
+ * GET /api/user/:id
+ * Headers: { Authorization: 'Barer <token>' }
+ * Function: Get details of a single user.
+ */
+function getUserDetails(req, res) {
+    let query = (req.user.user_group === 'admin')?
+        userModel.findOne({
+            attributes: { exclude: ['password'] },
+            where: {
+                id: req.params.id,
+            },
+        }): userModel.findOne({
+            attributes: { exclude: ['password'] },
+            where: {
+                id: req.params.id,
+                department: req.user.department,
+            }
+        });
+
+    // Add activity into the logs.
+    logModel.addEntry(
+        req.user.id,
+        req.params.id,
+        'users.view.individual',
+        `${req.user.username} (User ID: ${req.user.id}) viewed individual user details.`,
+    );
+    
     return query
         .then(result => res.json(result))
         .catch(err => res.status(500).json(err));
@@ -67,7 +100,7 @@ function getUsers(req, res) {
  * Body: { username: String, password: String, email: String, mobile_number: Integer, user_group: Enum(admin,manager,user), department: String }
  * Function: Create a new user.
  */
-async function addUser(req, res) {
+function addUser(req, res) {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(200).json({ errors: errors.array() })
@@ -146,6 +179,14 @@ function updateUserHousekeeping(req, res) {
         department,
     } = req.params.id;
 
+    /*
+     * Checks if password is null. If it isn't update the password.
+     */
+    let { password, ...updateBody } = { ...req.body };
+    if(password) {
+       updateBody = { ...updateBody, password } 
+    }
+
     // Add activity into the logs.
     logModel.addEntry(
         req.user.id,
@@ -154,7 +195,7 @@ function updateUserHousekeeping(req, res) {
         `${req.user.username} (User ID: ${req.user.id}) updated user details (${JSON.stringify({ from: { id: userId, username, email, mobile_number, user_group, department }, to: { ...req.body, password: null } })}).`,
     );
 
-    return userModel.update(req.body, {
+    return userModel.update(updateBody, {
         where: {
             id: userId,
         },
@@ -194,6 +235,7 @@ function deleteUser(req, res) {
 
 module.exports = {
     getUsers,
+    getUserDetails,
     addUser,
     updateUser,
     updateUserHousekeeping,

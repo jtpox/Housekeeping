@@ -34,6 +34,16 @@ export function getUsers(token) {
     });
 }
 
+export function getUserDetails(token, userId) {
+    return axios({
+        method: 'get',
+        url: `/user/${userId}`,
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
+
 export function addUser(
     token,
     username,

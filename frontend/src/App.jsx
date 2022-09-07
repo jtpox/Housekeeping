@@ -10,6 +10,7 @@ import Dashboard from './routes/dashboard';
 import UserDetails from './routes/user/details';
 import ManageUsers from './routes/user/manage';
 import NewUser from './routes/user/new';
+import EditUser from './routes/user/edit';
 
 import UserContext from './utils/userContext';
 
@@ -52,6 +53,12 @@ function App() {
             <Route path="new" element={
               <ProtectedRoute>
                 <NewUser />
+              </ProtectedRoute>
+            } />
+
+            <Route path=":userId" element={
+              <ProtectedRoute>
+                <EditUser />
               </ProtectedRoute>
             } />
           </Route>
