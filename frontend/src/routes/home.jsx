@@ -12,7 +12,7 @@ function Home(props) {
     const [loginForm, setLoginForm] = useState({
         email: '',
         password: '',
-    })
+    });
 
     const [errorMessage, setErrorMessage] = useState('');
     const formik = useFormik({
@@ -21,12 +21,20 @@ function Home(props) {
             password: '',
         },
         onSubmit: values => {
-            authenticate(values.email, values.password).then(result => {
-                localStorage.setItem('housekeeping', JSON.stringify(result.data));
-                setUserDetails(result.data);
-            }).catch(err => {
-                setErrorMessage('Invalid login details.');
-            });
+            setErrorMessage('');
+            if(
+                values.email == ''
+                && values.password == ''
+            ) {
+                setErrorMessage('All fields are required.');
+            } else {
+                authenticate(values.email, values.password).then(result => {
+                    localStorage.setItem('housekeeping', JSON.stringify(result.data));
+                    setUserDetails(result.data);
+                }).catch(err => {
+                    setErrorMessage('Invalid login details.');
+                });
+            }
         }
     });
 

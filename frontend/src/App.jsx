@@ -20,7 +20,7 @@ function App() {
   return (
     <div>
       <UserContext.Provider value={{userDetails, setUserDetails}}>
-        <Navigation />
+        {userDetails.token && <Navigation />}
         <Routes>
           <Route
             path="/"

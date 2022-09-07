@@ -14,7 +14,7 @@ function ShowUserLinks(props) {
         setUserDetails({});
     }
 
-    const menuClass = (props.mobile)? 'menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52' : 'menu menu-horizontal p-0';
+    const menuClass = (props.mobile)? 'menu menu-compact dropdown-content mt-3 p-2 shadow bg-neutral rounded-box w-52' : 'menu menu-horizontal p-0';
 
     if(userDetails.token) {
         return (
