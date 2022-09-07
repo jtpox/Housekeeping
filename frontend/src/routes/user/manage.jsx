@@ -33,13 +33,14 @@ function ManageUsers() {
                     Manage Users
                 </h1>
 
-                <p>
-                    <Link
-                        className="btn btn-primary btn-xs"
-                        to="/user/new">
-                        New User
-                    </Link>
-                </p>
+                {userDetails.user.user_group === 'admin' &&
+                    <p>
+                        <Link
+                            className="btn btn-primary btn-xs"
+                            to="/user/new">
+                            New User
+                        </Link>
+                    </p>}
             </div>
 
             <div className="overflow-x-auto mt-5">
@@ -75,12 +76,13 @@ function ManageUsers() {
                                             Edit
                                         </Link>
 
+                                        {userDetails.user.user_group === 'admin' &&
                                         <button
                                             type="button"
                                             className="btn btn-error btn-xs"
                                             onClick={() => removeUser(index)}>
                                             Delete
-                                        </button>
+                                        </button>}
                                     </div>
                                 </td>
                             </tr>

@@ -9,6 +9,7 @@ import Home from './routes/home';
 import Dashboard from './routes/dashboard';
 import UserDetails from './routes/user/details';
 import ManageUsers from './routes/user/manage';
+import NewUser from './routes/user/new';
 
 import UserContext from './utils/userContext';
 
@@ -45,6 +46,12 @@ function App() {
             <Route path="manage" element={
               <ProtectedRoute>
                 <ManageUsers />
+              </ProtectedRoute>
+            } />
+
+            <Route path="new" element={
+              <ProtectedRoute>
+                <NewUser />
               </ProtectedRoute>
             } />
           </Route>

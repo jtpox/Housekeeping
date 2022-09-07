@@ -23,8 +23,8 @@ function Home(props) {
         onSubmit: values => {
             setErrorMessage('');
             if(
-                values.email == ''
-                && values.password == ''
+                values.email === ''
+                && values.password === ''
             ) {
                 setErrorMessage('All fields are required.');
             } else {

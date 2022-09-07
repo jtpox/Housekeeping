@@ -23,15 +23,14 @@ function UserDetails() {
             setErrorMessage('');
             setSuccessMessage('');
             if(
-                values.mobile_number == ''
+                values.mobile_number === ''
             ) {
                 setErrorMessage('All fields are required.');
             } else {
-                // setSuccessMessage('Details have been updated.')
                 editDetails(
                     userDetails.token,
                     values.mobile_number
-                ).then(res => setSuccessMessage('Details have been udpated.')).catch(err => setErrorMessage(err));
+                ).then(res => setSuccessMessage('Details have been updated.')).catch(err => setErrorMessage(err));
             }
         }
     });

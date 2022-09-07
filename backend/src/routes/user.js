@@ -22,6 +22,11 @@ const {
     hashPassword
 } = require('../middlewares/sanitizers/password');
 
+const {
+    uniqueUsername,
+    uniqueEmail,
+} = require('../middlewares/validators/unique');
+
 const { sequelize } = require('../utils/database');
 
 const { User: userModel } = sequelize.models;
@@ -49,6 +54,10 @@ router.post(
             in: ['body'],
             isString: true,
             errorMessage: 'Username is wrong.',
+            custom: {
+                options: uniqueUsername,
+                errorMessage: 'Username is being used.',
+            },
         },
         password: {
             in: ['body'],
@@ -56,13 +65,17 @@ router.post(
             errorMessage: 'Password is wrong.',
             customSanitizer: {
                 options: hashPassword,
-            }
+            },
         },
         email: {
             in: ['body'],
             isString: true,
             isEmail: true,
             errorMessage: 'Email is wrong.',
+            custom: {
+                options: uniqueEmail,
+                errorMessage: 'Email is being used.',
+            },
         },
         mobile_number: {
             in: ['body'],
