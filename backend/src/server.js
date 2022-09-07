@@ -9,8 +9,6 @@ const db = require('./utils/database');
 const route = require('./utils/route');
 const passport = require('./utils/passport');
 
-const argon2 = require('argon2');
-
 const { name, version } = require('../package.json');
 
 const app = express();
