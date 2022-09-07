@@ -1,11 +1,10 @@
 const passport = require('passport');
 const { Strategy: LocalStrategy } = require('passport-local');
 const { Strategy: JwtStrategy, ExtractJwt } = require('passport-jwt');
-
 const argon2 = require('argon2');
 
 const { sequelize } = require('./database');
-const { User } = sequelize.models;
+const { User, Log } = sequelize.models;
 
 passport.use(new LocalStrategy({
     usernameField: 'email',
@@ -24,10 +23,22 @@ passport.use(new LocalStrategy({
             .verify(user.password, password)
             .then(success => { 
                 if(success) {
+                    Log.addEntry(
+                        user.id,
+                        null,
+                        'auth.success',
+                        `${user.username} (User ID: ${user.id}) successfully logged in.`,
+                    );
                     return done(null, user);
+                } else {
+                    Log.addEntry(
+                        user.id,
+                        null,
+                        'auth.failure',
+                        `${user.username} (User ID: ${user.id}) failed to log in.`,
+                    );
+                    return done(null, false, { message: 'Incorrect Details.' });
                 }
-
-                return done(null, false, { message: 'Incorrect Details.' });
              });
     }).catch(err => { return done(err); }); 
 }));

@@ -92,7 +92,7 @@ function Home(props) {
                                 onChange={formik.handleChange} />
                         </div>
                         <div className="form-control mt-6">
-                            <button className="btn btn-primary" type="submit">Login</button>
+                            <button className="btn btn-primary" type="submit">Log In</button>
                         </div>
                     </form>
                 </div>
