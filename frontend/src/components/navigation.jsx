@@ -22,7 +22,7 @@ function ShowUserLinks(props) {
                 <li><Link to="/dashboard">Dashboard</Link></li>
                 <li><Link to="/user/details">Edit Details</Link></li>
                 {userDetails.token && higherUserGroups.includes(userDetails.user.user_group)?
-                    <li><a>Manage Users</a></li> : ''}
+                    <li><Link to="/user/manage">Manage Users</Link></li> : ''}
                 <li><a onClick={logOut}>Log Out</a></li>
             </ul>
         );
