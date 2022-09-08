@@ -23,6 +23,11 @@ function App() {
 
   const [userDetails, setUserDetails] = useState(userDetailsFromLocalStorage);
 
+  /*
+   * Refresh user details from the backend.
+   * Sometimes admin has changed user details without the user knowing.
+   * Grabs new user details and stores it in state and localstorage.
+   */
   useEffect(() => {
     if(userDetails.token) {
       refreshDetails(userDetails.token).then(result => {
