@@ -11,6 +11,16 @@ export function authenticate(email, password) {
     });
 }
 
+export function refreshDetails(token) {
+    return axios({
+        method: 'get',
+        url: '/auth',
+        headers: {
+            Authorization: `Bearer ${token}`,
+        },
+    });
+}
+
 export function editDetails(token, mobile_number) {
     return axios({
         method: 'put',

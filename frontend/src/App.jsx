@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import './App.css';
 
@@ -14,11 +14,28 @@ import EditUser from './routes/user/edit';
 
 import UserContext from './utils/userContext';
 
+import { refreshDetails } from './api/user';
+
 function App() {
   // const [count, setCount] = useState(0)
   const userDetailsFromLocalStorage = (localStorage.getItem('housekeeping'))?
     JSON.parse(localStorage.getItem('housekeeping')) : {};
+
   const [userDetails, setUserDetails] = useState(userDetailsFromLocalStorage);
+
+  useEffect(() => {
+    if(userDetails.token) {
+      refreshDetails(userDetails.token).then(result => {
+        const newUserDetails = {
+          token: userDetails.token,
+          user: result.data,
+        };
+
+        setUserDetails(newUserDetails);
+        localStorage.setItem('housekeeping', JSON.stringify(newUserDetails));
+      });
+    }
+  }, []);
 
   return (
     <div>
