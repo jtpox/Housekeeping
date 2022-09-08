@@ -1,11 +1,12 @@
 {
-  "name": "tech-1",
+  "name": "housekeeping-backend",
   "version": "1.0.0",
   "description": "",
   "main": "src/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "serve": "node src/server.js"
   },
   "author": "Quek Jian Ting",
   "license": "ISC",
