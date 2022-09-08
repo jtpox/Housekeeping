@@ -1,6 +1,15 @@
 const jwt = require('jsonwebtoken');
 
 /*
+ * GET /api/auth
+ * Headers: { Authorization: 'Barer <token>' }
+ * Function: Refresh user details.
+ */
+function refreshUserDetails(req, res) {
+    res.status(200).json(req.user);
+}
+
+/*
  * POST /api/auth
  * Body: { email:string, password:string }
  * Function: Handles login.
@@ -43,5 +52,6 @@ function logIn(req, res) {
 }
 
 module.exports = {
+    refreshUserDetails,
     logIn,
 };

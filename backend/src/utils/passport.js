@@ -54,6 +54,7 @@ passport.use(new JwtStrategy({
     }
 
     User.findOne({
+        attributes: { exclude: ['password'] },
         where: {
             id,
         },
