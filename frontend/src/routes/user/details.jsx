@@ -30,7 +30,15 @@ function UserDetails() {
                 editDetails(
                     userDetails.token,
                     values.mobile_number
-                ).then(res => setSuccessMessage('Details have been updated.')).catch(err => setErrorMessage(err));
+                ).then(res => {
+                    // Deep clone userDetails.
+                    const newUserDetails = JSON.parse(JSON.stringify(userDetails));
+                    newUserDetails.user.mobile_number = values.mobile_number;
+                    setUserDetails(newUserDetails);
+                    localStorage.setItem('housekeeping', JSON.stringify(newUserDetails));
+
+                    setSuccessMessage('Details have been updated.')
+                }).catch(err => setErrorMessage(err));
             }
         }
     });
